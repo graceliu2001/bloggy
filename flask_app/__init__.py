@@ -27,10 +27,11 @@ from .users.routes import users
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config["MONGODB_HOST"] = os.getenv("MONGODB_HOST")
+    app.config["SECRET_KEY"] = b'\xcc)A\x90R\xeb\x90@\x0c\xf9\xaa!\x07\xfa\xee\xd4'
 
-    app.config.from_pyfile("config.py", silent=False)
-    if test_config is not None:
-        app.config.update(test_config)
+    # app.config.from_pyfile("config.py", silent=False)
+    # if test_config is not None:
+    #     app.config.update(test_config)
 
     db.init_app(app)
     login_manager.init_app(app)
