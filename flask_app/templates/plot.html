@@ -1,0 +1,19 @@
+{% extends "header.html" %}
+{% block content %}
+
+<br><h4>Pie Chart of Total Contributions</h4>
+
+{% if values[0] == 0 and values[1] == 0 %}
+    <div>No contributions have been made yet. To make a post, click <a href="{{ url_for('posts.create_post', username=username) }}">here</a>!</div>
+{% else %}
+    <div id='pie' class='pie'></div>
+
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+    <script type='text/javascript'>
+        var g = {{graphJSON | safe}};
+        Plotly.plot('pie', g, {});
+    </script>
+{% endif %}
+
+{% endblock %}

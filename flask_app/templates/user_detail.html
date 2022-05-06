@@ -1,0 +1,63 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        {# Display any error messages #}
+        {% if error %}
+            <h1>{{ error }}</h1>
+        {% endif %}
+    </div>
+</div>
+{% if username %}
+<div class="row">
+    <div class="col">
+        {# Indicate which user's posts we're looking at #}
+        <h1>{{ username }}'s Blog Posts</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {# Show all posts made by the user #}
+        <h3>Posts <small class="float-right">{{ posts|length }} posts</small></h3>
+        <ul class="media-list">
+            {% for post in posts %}
+            <li class="media review-item">
+                <div class="media-body">
+                    <strong><a href="{{ url_for('posts.post_detail', post_title=post.post_title) }}">
+                        {{ post.post_title }}</a>
+                    </strong>
+                    <span class="float-right">
+                        <small>{{ post.date }}</small>
+                    </span>
+                    <p>
+                        {{ comments.content }}
+                    </p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        {# Show all comments made by the user #}
+        <h3>Comments <small class="float-right">{{ comments|length }} comments</small></h3>
+        <ul class="media-list">
+            {% for comment in comments %}
+            <li class="media review-item">
+                <div class="media-body">
+                    <strong>For: <a href="{{ url_for('posts.post_detail', post_title=comment.post_title) }}">
+                        {{ comment.post_title }}</a>
+                    </strong>
+                    <span class="float-right">
+                    <small>{{ comment.date }}</small>
+                    </span>
+                    <p>
+                        <b>Comment: </b>
+                        {{ comment.content }}
+                    </p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

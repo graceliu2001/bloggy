@@ -1,0 +1,5 @@
+{% extends "header.html" %}
+{% block content %}
+<h1>{{ error }}</h1>
+<a href="{{ url_for('posts.index') }}">Go back home</a>
+{% endblock %}

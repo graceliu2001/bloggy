@@ -1,0 +1,76 @@
+{% extends "header.html" %}
+{% block content %}
+
+{% if error_msg %}
+<b>{{ error_msg }}</b>
+{% endif %}
+
+{% if post %}
+
+{# Display card for the post details #}
+<br><div class="row">
+  <div class="col">
+    <div class="card text-center">
+      <div class="card-header">
+        <b>Post title:</b> {{ post.post_title }} <br>
+        <b>Author:</b> <a href="{{ url_for('posts.user_detail', username=username) }}">{{ username }}</a>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{ post.content }}</li> 
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Comments #}
+<div class="row">
+  <div class="col-md-12">
+    <br><h3> Comments <small class="float-right">{{ comments|length }} comments</small></h3>
+    <ul class="media-list">
+      {% for comment in comments %}
+      <li class="media review-item">
+        <div class="media-body">
+          <span class="float-right">
+            <small>{{ comment.date }}</small>
+          </span>
+          <a href="{{ url_for('posts.user_detail', username=comment.commenter.username) }}">
+            <strong>@{{ comment.commenter.username }}</strong>
+          </a>
+          <p>
+            {{ comment.content }}
+          </p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% if current_user.is_authenticated %}
+{# Comment submission form #}
+<div class="row">
+  <div class="col">
+    <form method="POST" action="">
+      {{ form.csrf_token }}
+      <div class="form-group">
+        {{ form.text.label }}
+        {{ form.text(class="form-control") }}
+
+        {% if form.text.errors %}
+        <div class="alert alert-warning" role="alert">
+          {% for error in form.text.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+      </div>
+      {{ form.submit() }}
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+{% endblock content %}
